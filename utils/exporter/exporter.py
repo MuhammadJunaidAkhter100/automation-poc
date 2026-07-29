@@ -37,7 +37,10 @@ class AdaptExporter:
             self._merge(manifest)
             return
         async with async_playwright() as playwright:
-            launch_kwargs = {"headless": self.settings.headless}
+            launch_kwargs = {
+                "headless": self.settings.headless,
+                "args": ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
+            }
             if self.settings.browser_executable_path:
                 launch_kwargs["executable_path"] = str(self.settings.browser_executable_path)
                 self.logger.info("Using local browser executable: %s", self.settings.browser_executable_path)
@@ -57,8 +60,12 @@ class AdaptExporter:
             try:
                 if self.settings.session_path.exists():
                     self.logger.info("Loaded saved Playwright session.")
+                elif self.settings.headless and not self.credentials.email:
+                    raise RuntimeError(
+                        "Headless Playwright requires saved session state or Adapt email and password."
+                    )
                 else:
-                    self.logger.info("No saved session. Log in manually in Chromium; waiting for the results table.")
+                    self.logger.info("No saved session. Signing in with supplied Adapt credentials.")
                 await self._retry(
                     "opening search",
                     lambda: client.open_search(

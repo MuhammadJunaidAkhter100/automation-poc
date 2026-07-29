@@ -367,7 +367,7 @@ async def scrape(sid: int, payload: ScrapeInput) -> dict[str, str]:
     )
     safe_execute(supabase.table("jobs").update({"status": "scraping"}).eq("id", sid))
     asyncio.create_task(monitor(sid, process))
-    return {"message": "Adapt scraping started. Log in in the visible Chromium window if prompted."}
+    return {"message": "Adapt scraping started."}
 
 
 @router.post("/api/pipeline/{sid}/cancel-scrape")

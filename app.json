@@ -1,6 +1,14 @@
 {
   "name": "adapt-exporter-backend",
   "description": "FastAPI backend for the Adapt exporter.",
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    },
+    {
+      "url": "https://github.com/mxschmitt/heroku-playwright-buildpack.git"
+    }
+  ],
   "env": {
     "SUPABASE_URL": {
       "description": "Supabase project URL.",
@@ -17,6 +25,14 @@
     "CORS_ORIGINS": {
       "description": "JSON list of permitted frontend origins, for example [\"https://example.com\"].",
       "required": false
+    },
+    "HEADLESS": {
+      "description": "Run Playwright without a visible browser window.",
+      "value": "true"
+    },
+    "PLAYWRIGHT_BUILDPACK_BROWSERS": {
+      "description": "Browsers installed during the Heroku build.",
+      "value": "chromium"
     }
   }
 }

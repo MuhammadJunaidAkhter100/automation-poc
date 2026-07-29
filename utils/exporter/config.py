@@ -160,7 +160,7 @@ class Settings:
         executable_path = _resolve_browser_executable_path()
         return cls(
             search_url=search_url,
-            headless=_as_bool(os.getenv("HEADLESS", "false")),
+            headless=_as_bool(os.getenv("HEADLESS", "true")),
             browser_channel=channel,
             browser_executable_path=executable_path,
             viewport_width=int(os.getenv("VIEWPORT_WIDTH", "1440")),
