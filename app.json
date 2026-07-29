@@ -1,0 +1,22 @@
+{
+  "name": "adapt-exporter-backend",
+  "description": "FastAPI backend for the Adapt exporter.",
+  "env": {
+    "SUPABASE_URL": {
+      "description": "Supabase project URL.",
+      "required": true
+    },
+    "SUPABASE_KEY": {
+      "description": "Supabase API key with access to the required tables.",
+      "required": true
+    },
+    "ADAPT_SEARCH_URL": {
+      "description": "Optional default Adapt search URL.",
+      "required": false
+    },
+    "CORS_ORIGINS": {
+      "description": "JSON list of permitted frontend origins, for example [\"https://example.com\"].",
+      "required": false
+    }
+  }
+}
