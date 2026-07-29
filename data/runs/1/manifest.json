@@ -1,0 +1,22 @@
+{
+  "completed_pages": [
+    1
+  ],
+  "columns": [
+    "Name",
+    "Contact",
+    "Company",
+    "Company Details",
+    "First Name",
+    "Last Name",
+    "Job Title",
+    "Company Name",
+    "LinkedIn URL",
+    "Domain",
+    "Industry",
+    "Email",
+    "Headcount",
+    "Location"
+  ],
+  "is_complete": true
+}
