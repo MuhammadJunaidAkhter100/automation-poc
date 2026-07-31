@@ -105,6 +105,15 @@ def build_filters(j: dict[str, Any]) -> Filters:
     )
 
 
+def tail_log(sid: int, lines: int = 30) -> str:
+    path = folder(sid) / "process.log"
+    if not path.exists():
+        return ""
+    with path.open("r", encoding="utf-8", errors="replace") as f:
+        content = f.readlines()
+    return "".join(content[-lines:]).strip()
+
+
 def finish(sid: int, process: subprocess.Popen[str]) -> None:
     PROCESSES.pop(sid, None)
     run_session = folder(sid) / "playwright_storage_state.json"
@@ -114,9 +123,15 @@ def finish(sid: int, process: subprocess.Popen[str]) -> None:
 
     ok = process.returncode == 0 and output(sid).exists()
     status = "cleaned" if ok else "error"
+    log_tail = tail_log(sid) if not ok else ""
+    error_msg = None
+    if not ok:
+        error_msg = f"Exporter exited with code {process.returncode}"
+        if log_tail:
+            error_msg += f" | Details: {log_tail}"
     update_values = {
         "status": status,
-        "error": None if ok else f"Exporter exited with code {process.returncode}",
+        "error": error_msg,
         "finished_at": now(),
     }
     safe_execute(supabase.table("pipelines").update(update_values).eq("session_id", sid))
@@ -219,6 +234,15 @@ def build_filters(j: dict[str, Any]) -> Filters:
     )
 
 
+def tail_log(sid: int, lines: int = 30) -> str:
+    path = folder(sid) / "process.log"
+    if not path.exists():
+        return ""
+    with path.open("r", encoding="utf-8", errors="replace") as f:
+        content = f.readlines()
+    return "".join(content[-lines:]).strip()
+
+
 def finish(sid: int, process: subprocess.Popen[str]) -> None:
     PROCESSES.pop(sid, None)
     run_session = folder(sid) / "playwright_storage_state.json"
@@ -228,9 +252,15 @@ def finish(sid: int, process: subprocess.Popen[str]) -> None:
 
     ok = process.returncode == 0 and output(sid).exists()
     status = "cleaned" if ok else "error"
+    log_tail = tail_log(sid) if not ok else ""
+    error_msg = None
+    if not ok:
+        error_msg = f"Exporter exited with code {process.returncode}"
+        if log_tail:
+            error_msg += f" | Details: {log_tail}"
     update_values = {
         "status": status,
-        "error": None if ok else f"Exporter exited with code {process.returncode}",
+        "error": error_msg,
         "finished_at": now(),
     }
     safe_execute(supabase.table("pipelines").update(update_values).eq("session_id", sid))
