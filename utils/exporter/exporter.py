@@ -41,7 +41,23 @@ class AdaptExporter:
         async with async_playwright() as playwright:
             launch_kwargs = {
                 "headless": self.settings.headless,
-                "args": ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
+                "args": [
+                    "--no-sandbox",
+                    "--disable-setuid-sandbox",
+                    "--disable-dev-shm-usage",
+                    "--disable-gpu",
+                    "--disable-software-rasterizer",
+                    "--disable-background-networking",
+                    "--disable-background-timer-throttling",
+                    "--disable-backgrounding-occluded-windows",
+                    "--disable-renderer-backgrounding",
+                    "--disable-extensions",
+                    "--disable-component-extensions-with-background-pages",
+                    "--disable-features=Translate,BackForwardCache,AcceptCHFrame,MediaRouter,OptimizationHints,AudioServiceOutOfProcess",
+                    "--single-process",
+                    "--no-zygote",
+                    "--no-remote",
+                ],
             }
             if self.settings.browser_executable_path:
                 launch_kwargs["executable_path"] = str(self.settings.browser_executable_path)

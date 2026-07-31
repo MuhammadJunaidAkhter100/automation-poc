@@ -175,7 +175,7 @@ class Settings:
             user_agent=user_agent,
             manual_login_timeout_seconds=int(os.getenv("MANUAL_LOGIN_TIMEOUT_SECONDS", "900")),
             timeout_ms=int(os.getenv("TIMEOUT_MS", "45000")),
-            max_retries=int(os.getenv("MAX_RETRIES", "4")),
+            max_retries=int(os.getenv("MAX_RETRIES", "2")),
             retry_base_seconds=float(os.getenv("RETRY_BASE_SECONDS", "2.0")),
             min_action_delay_seconds=float(os.getenv("MIN_ACTION_DELAY_SECONDS", "0.7")),
             max_action_delay_seconds=float(os.getenv("MAX_ACTION_DELAY_SECONDS", "1.8")),

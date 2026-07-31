@@ -384,6 +384,8 @@ async def scrape(sid: int, payload: ScrapeInput) -> dict[str, str]:
         "--data-dir",
         str(run),
     ]
+    env["PYTHONUNBUFFERED"] = "1"
+    env["PLAYWRIGHT_BROWSERS_PATH"] = "/app/.cache/ms-playwright"
     if payload.email and payload.password:
         credentials_file = run / "credentials.json"
         credentials_file.write_text(
