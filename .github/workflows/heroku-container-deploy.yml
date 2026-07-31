@@ -31,7 +31,8 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
         run: |
-          # Use Heroku API to create a release by running the heroku container:release command via the Heroku CLI
+          # Use Heroku CLI to ensure the app is on the container stack, then release the pushed Docker image.
           curl https://cli-assets.heroku.com/install.sh | sh
           echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
+          heroku stack:set container --app $HEROKU_APP_NAME || true
           heroku container:release web --app $HEROKU_APP_NAME

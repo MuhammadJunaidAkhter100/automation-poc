@@ -1,6 +1,7 @@
 {
   "name": "adapt-exporter-backend",
   "description": "FastAPI backend for the Adapt exporter.",
+  "stack": "container",
   "buildpacks": [
     {
       "url": "https://github.com/heroku/heroku-buildpack-apt.git"
