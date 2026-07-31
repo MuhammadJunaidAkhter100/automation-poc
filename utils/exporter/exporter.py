@@ -51,7 +51,8 @@ class AdaptExporter:
             try:
                 browser = await playwright.chromium.launch(**launch_kwargs)
             except Exception as e:
-                if "Executable doesn't exist" in str(e):
+                msg = str(e)
+                if "Executable doesn't exist" in msg:
                     self.logger.warning("Playwright browser missing. Attempting to install...")
                     result = subprocess.run(
                         [sys.executable, "-m", "playwright", "install", "chromium"],
@@ -67,6 +68,18 @@ class AdaptExporter:
                         raise RuntimeError(f"playwright install failed: {result.stderr[:500]}") from e
                     self.logger.info("Browser installed. Retrying launch.")
                     browser = await playwright.chromium.launch(**launch_kwargs)
+                elif "error while loading shared libraries" in msg or "TargetClosedError" in msg:
+                    self.logger.warning("Missing system libraries. Attempting to install deps...")
+                    result = subprocess.run(
+                        [sys.executable, "-m", "playwright", "install-deps", "chromium"],
+                        capture_output=True, text=True,
+                    )
+                    if result.returncode != 0:
+                        self.logger.warning("install-deps failed: %s", result.stderr[:500])
+                    else:
+                        self.logger.info("System deps installed. Retrying launch.")
+                        browser = await playwright.chromium.launch(**launch_kwargs)
+                    raise
                 else:
                     raise
             context = await browser.new_context(
