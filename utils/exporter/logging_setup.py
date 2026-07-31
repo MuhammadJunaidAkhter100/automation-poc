@@ -18,4 +18,5 @@ def configure_logging(log_dir: Path, level: str) -> logging.Logger:
     stream_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
     logger.addHandler(stream_handler)
+    logger.propagate = False
     return logger

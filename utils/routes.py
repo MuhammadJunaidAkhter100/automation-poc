@@ -391,8 +391,13 @@ async def scrape(sid: int, payload: ScrapeInput) -> dict[str, str]:
         )
         command.extend(["--credentials-file", str(credentials_file)])
 
-    with (run / "process.log").open("a", encoding="utf-8") as log:
+    process_log = run / "process.log"
+    with process_log.open("a", encoding="utf-8") as log:
+        log.write(f"[{now()}] Starting exporter subprocess: {' '.join(command)}\n")
+        log.flush()
         process = subprocess.Popen(command, cwd=BACKEND, env=env, stdout=log, stderr=subprocess.STDOUT, text=True)
+        log.write(f"[{now()}] Subprocess started with pid={process.pid}\n")
+        log.flush()
 
     PROCESSES[sid] = process
     safe_execute(
@@ -420,6 +425,15 @@ async def cancel(sid: int) -> dict[str, str]:
 async def get_stats(sid: int) -> dict[str, Any]:
     get_job(sid)
     return stats(sid)
+
+
+@router.get("/api/pipeline/{sid}/logs")
+async def get_logs(sid: int, lines: int = 100) -> dict[str, Any]:
+    get_job(sid)
+    return {
+        "session_id": sid,
+        "logs": tail_log(sid, lines=max(1, min(lines, 500))),
+    }
 
 
 @router.get("/api/pipeline/{sid}/preview")
