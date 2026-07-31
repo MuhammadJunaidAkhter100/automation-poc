@@ -26,6 +26,14 @@
       "description": "Optional default Adapt search URL.",
       "required": false
     },
+    "ADAPT_EMAIL": {
+      "description": "Adapt login email used for headless scraping when no session state exists.",
+      "required": false
+    },
+    "ADAPT_PASSWORD": {
+      "description": "Adapt login password used for headless scraping when no session state exists.",
+      "required": false
+    },
     "CORS_ORIGINS": {
       "description": "JSON list of permitted frontend origins, for example [\"https://example.com\"].",
       "required": false,

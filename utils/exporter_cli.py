@@ -6,6 +6,7 @@ import asyncio
 import argparse
 import json
 import logging
+import os
 from pathlib import Path
 
 from utils.exporter.config import Settings
@@ -35,6 +36,11 @@ def main() -> int:
         if args.credentials_file:
             credentials = AdaptCredentials.from_mapping(json.loads(args.credentials_file.read_text(encoding="utf-8")))
             args.credentials_file.unlink(missing_ok=True)
+        elif os.getenv("ADAPT_EMAIL") and os.getenv("ADAPT_PASSWORD"):
+            credentials = AdaptCredentials(
+                email=os.getenv("ADAPT_EMAIL", ""),
+                password=os.getenv("ADAPT_PASSWORD", ""),
+            )
     except ValueError as error:
         print(f"Configuration error: {error}")
         return 2
