@@ -155,7 +155,7 @@ class Settings:
         search_url = search_url_override or os.getenv("ADAPT_SEARCH_URL", "").strip() or DEFAULT_ADAPT_SEARCH_URL
         raw_data_dir = data_dir_override or Path(os.getenv("DATA_DIR", "data"))
         data_dir = raw_data_dir if raw_data_dir.is_absolute() else project_dir / raw_data_dir
-        channel = os.getenv("BROWSER_CHANNEL", "chromium").strip() or None
+        channel = os.getenv("BROWSER_CHANNEL", "").strip() or None
         user_agent = os.getenv("USER_AGENT", "").strip() or None
         executable_path = _resolve_browser_executable_path()
         return cls(
