@@ -40,6 +40,13 @@ def _resolve_browser_executable_path() -> Path | None:
         for candidate in candidates:
             if candidate.exists():
                 return candidate
+    cache = Path(os.getenv("PLAYWRIGHT_BROWSERS_PATH", "")) if os.getenv("PLAYWRIGHT_BROWSERS_PATH") else Path.home() / ".cache" / "ms-playwright"
+    if cache.is_dir():
+        for entry in sorted(cache.iterdir(), reverse=True):
+            if entry.name.startswith("chromium-") and not entry.name.startswith("chromium_headless_shell-"):
+                chrome = entry / "chrome-linux" / "chrome"
+                if chrome.exists():
+                    return chrome
     return None
 
 
