@@ -343,7 +343,7 @@ async def scrape(sid: int, payload: ScrapeInput) -> dict[str, str]:
     command = [
         PYTHON,
         "-m",
-        "backend.utils.exporter_cli",
+        "utils.exporter_cli",
         "--filters-file",
         str(filter_file),
         "--data-dir",
@@ -357,7 +357,7 @@ async def scrape(sid: int, payload: ScrapeInput) -> dict[str, str]:
         command.extend(["--credentials-file", str(credentials_file)])
 
     with (run / "process.log").open("a", encoding="utf-8") as log:
-        process = subprocess.Popen(command, cwd=BACKEND.parent, env=env, stdout=log, stderr=subprocess.STDOUT, text=True)
+        process = subprocess.Popen(command, cwd=BACKEND, env=env, stdout=log, stderr=subprocess.STDOUT, text=True)
 
     PROCESSES[sid] = process
     safe_execute(

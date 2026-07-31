@@ -8,10 +8,10 @@ import json
 import logging
 from pathlib import Path
 
-from backend.utils.exporter.config import Settings
-from backend.utils.exporter.exporter import AdaptExporter
-from backend.utils.exporter.logging_setup import configure_logging
-from backend.utils.exporter.models import AdaptCredentials, SearchFilters
+from utils.exporter.config import Settings
+from utils.exporter.exporter import AdaptExporter
+from utils.exporter.logging_setup import configure_logging
+from utils.exporter.models import AdaptCredentials, SearchFilters
 
 
 def main() -> int:

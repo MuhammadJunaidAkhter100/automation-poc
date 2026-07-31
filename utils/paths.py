@@ -6,7 +6,7 @@ be backed by a persistent volume in production.
 
 from pathlib import Path
 
-from backend.database.settings import settings
+from database.settings import settings
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 DATA_DIR = settings.backend_data_dir if settings.backend_data_dir.is_absolute() else BACKEND_DIR / settings.backend_data_dir
