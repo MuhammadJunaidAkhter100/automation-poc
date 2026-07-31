@@ -1,0 +1,13 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+venv/
+.env
+logs/
+.rsync-cache/
+node_modules/
+.env.local
+.DS_Store

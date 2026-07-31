@@ -1,0 +1,12 @@
+{
+  "job_titles": [
+    "string"
+  ],
+  "industries": [
+    "string"
+  ],
+  "country": "",
+  "employee_counts": [
+    "string"
+  ]
+}
