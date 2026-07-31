@@ -3,6 +3,9 @@
   "description": "FastAPI backend for the Adapt exporter.",
   "buildpacks": [
     {
+      "url": "https://github.com/heroku/heroku-buildpack-apt.git"
+    },
+    {
       "url": "heroku/python"
     },
     {

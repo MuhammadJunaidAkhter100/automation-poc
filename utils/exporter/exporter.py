@@ -76,10 +76,9 @@ class AdaptExporter:
                     )
                     if result.returncode != 0:
                         self.logger.warning("install-deps failed: %s", result.stderr[:500])
-                    else:
-                        self.logger.info("System deps installed. Retrying launch.")
-                        browser = await playwright.chromium.launch(**launch_kwargs)
-                    raise
+                        raise
+                    self.logger.info("System deps installed. Retrying launch.")
+                    browser = await playwright.chromium.launch(**launch_kwargs)
                 else:
                     raise
             context = await browser.new_context(
