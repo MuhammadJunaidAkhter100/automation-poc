@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# Heroku post-compile hook: install Playwright browsers matched to the Python version.
-# Runs after pip install, before the app starts.
-playwright install chromium 2>&1 | tail -5
