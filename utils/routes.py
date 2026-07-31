@@ -370,6 +370,11 @@ async def scrape(sid: int, payload: ScrapeInput) -> dict[str, str]:
         shutil.copy2(shared_session, run / "playwright_storage_state.json")
 
     env = os.environ.copy()
+    lib_dirs = [BACKEND / p for p in ("usr/lib/x86_64-linux-gnu", "lib/x86_64-linux-gnu", "usr/lib", "lib")]
+    extra = [str(d) for d in lib_dirs if d.is_dir()]
+    if extra:
+        existing = env.get("LD_LIBRARY_PATH", "")
+        env["LD_LIBRARY_PATH"] = ":".join(extra) + (":" + existing if existing else "")
     command = [
         PYTHON,
         "-m",
