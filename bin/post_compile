@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 # Install Playwright system libraries on Heroku.
-# The browser binary itself is installed at runtime by the exporter.
-
 echo "-----> post_compile: Installing Playwright system dependencies..."
 
 if command -v apt-get &> /dev/null; then
@@ -11,12 +9,10 @@ if command -v apt-get &> /dev/null; then
       libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 \
       libgbm1 libpango-1.0-0 libcairo2 libasound2 \
       2>&1 | tail -10
-    echo "-----> post_compile: apt-get install exit code: $?"
-elif command -v yum &> /dev/null; then
-    yum install -y pango libXcomposite libXcursor libXdamage libXext libXfixes libXi libXrandr libXScrnSaver libXtst atk at-spi2-atk gtk3 2>&1 | tail -10
-    echo "-----> post_compile: yum install exit code: $?"
-else
-    echo "-----> post_compile: WARNING - no package manager found (apt-get or yum)"
+    echo "-----> post_compile: apt-get exit code: $?"
 fi
+
+# Fallback: use Playwright's own dependency installer
+python -m playwright install-deps chromium 2>&1 | tail -10 || echo "-----> post_compile: playwright install-deps not available"
 
 echo "-----> post_compile: done"
