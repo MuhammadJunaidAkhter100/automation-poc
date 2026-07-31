@@ -5,6 +5,8 @@ from __future__ import annotations
 import asyncio
 from contextlib import suppress
 import logging
+import subprocess
+import sys
 from pathlib import Path
 from typing import Awaitable, Callable, TypeVar
 
@@ -46,7 +48,27 @@ class AdaptExporter:
                 self.logger.info("Using local browser executable: %s", self.settings.browser_executable_path)
             elif self.settings.browser_channel:
                 launch_kwargs["channel"] = self.settings.browser_channel
-            browser = await playwright.chromium.launch(**launch_kwargs)
+            try:
+                browser = await playwright.chromium.launch(**launch_kwargs)
+            except Exception as e:
+                if "Executable doesn't exist" in str(e):
+                    self.logger.warning("Playwright browser missing. Attempting to install...")
+                    result = subprocess.run(
+                        [sys.executable, "-m", "playwright", "install", "chromium"],
+                        capture_output=True, text=True,
+                    )
+                    if result.returncode != 0:
+                        self.logger.warning("playwright install failed, trying with system deps: %s", result.stderr[:500])
+                        result = subprocess.run(
+                            [sys.executable, "-m", "playwright", "install", "chromium", "--with-deps"],
+                            capture_output=True, text=True,
+                        )
+                    if result.returncode != 0:
+                        raise RuntimeError(f"playwright install failed: {result.stderr[:500]}") from e
+                    self.logger.info("Browser installed. Retrying launch.")
+                    browser = await playwright.chromium.launch(**launch_kwargs)
+                else:
+                    raise
             context = await browser.new_context(
                 storage_state=str(self.settings.session_path) if self.settings.session_path.exists() else None,
                 viewport={"width": self.settings.viewport_width, "height": self.settings.viewport_height},
