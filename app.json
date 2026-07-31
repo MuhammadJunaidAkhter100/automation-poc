@@ -24,7 +24,8 @@
     },
     "CORS_ORIGINS": {
       "description": "JSON list of permitted frontend origins, for example [\"https://example.com\"].",
-      "required": false
+      "required": false,
+      "value": "[\"https://data-scraping-mhuzaifabilal576-9348s-projects.vercel.app\",\"https://data-scraping-wine.vercel.app\",\"http://localhost:5173\",\"http://127.0.0.1:5173\"]"
     },
     "HEADLESS": {
       "description": "Run Playwright without a visible browser window.",
