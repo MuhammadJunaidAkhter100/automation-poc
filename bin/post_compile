@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Install system libraries required by Playwright Chromium headless shell.
+# The browser binary itself is installed at runtime when first needed.
+set -e
+echo "-----> Installing Playwright system dependencies..."
+apt-get update -qq 2>&1 | tail -2
+apt-get install -y -qq \
+  libatk-1.0-0 \
+  libatk-bridge2.0-0 \
+  libcups2 \
+  libdrm2 \
+  libdbus-1-3 \
+  libxkbcommon0 \
+  libxcomposite1 \
+  libxdamage1 \
+  libxfixes3 \
+  libxrandr2 \
+  libgbm1 \
+  libpango-1.0-0 \
+  libcairo2 \
+  libasound2 \
+  2>&1 | tail -5
+echo "-----> Playwright system dependencies installed."
